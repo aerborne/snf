@@ -1,0 +1,57 @@
+
+.clientInformationDiv{
+   width:15em;
+   position:relative; 
+}
+.clientInformationCheckbox{
+   position:absolute;
+   top:2%;
+   left:-10%;   
+}
+.clientInformationImg{
+    width:100%;
+    height:2.5em;
+}
+.clientInformationNameField{
+  position:absolute;
+  top:40%;
+  left:21%;
+  color:grey;  
+}
+
+/* all project progress script */
+.projectProgressCard{
+   position:relative;
+}
+.projectProgressCard a{
+    position:absolute;
+    top:10%;
+    z-index:2;
+    right:6%;
+    background: rgba(0, 0, 0, 0.5);
+    color:white;
+    padding:1em;
+}
+/*add project updates styling */ 
+.uploadPicturesContainer{
+    overflow-y: hidden;
+    overflow-y:scroll;
+    height:20em;
+}
+.uploadPhotoDivHolder{
+   position:relative!important;
+}
+.uploadPhotoDivHolder img{
+   height:8em!important;
+   width:100%!important; 
+}
+.deletePictureUploadBTN{
+   position:absolute!important;
+   background: rgba(0, 0, 0, 0.5)!important;
+   color:white!important;
+   top:7%;
+   z-index:2;
+   right:6%;
+   padding-left:0.5em;
+   padding-right:0.5em;
+}

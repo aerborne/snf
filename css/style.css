@@ -1,0 +1,12 @@
+.slider .slides {
+    background-color:transparent;
+    
+}
+
+.padding_bg_image{
+     background-image:url("paddingBG.JPG");
+     height:100%;
+     background-position:center;
+     background-repeat:no-repeat;
+     background-size:cover;
+}

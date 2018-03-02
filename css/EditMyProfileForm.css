@@ -1,0 +1,79 @@
+
+/* Styling Button and icons */
+.SpaceBetweenBTN{
+    margin-bottom: 1em!important;
+    margin-top: 1.5em!important;
+    cursor:pointer!important;
+    margin:1em!important;
+}
+.SpaceBetweenBTN i{
+    font-size:3em!important; 
+    color:grey!important;
+}
+.SpaceBetweenBTN i:hover{
+    color:#ff99e6!important;
+}
+.SaveProfilePhotoBTN{
+     margin-top:27em!important;
+     background-color:grey!important;
+}
+.SaveProfilePhotoBTN:hover{
+    background-color:#ff99e6!important;
+}
+/* Styling Button and icons */
+
+ .textCenterOfPhotoBG {
+    margin-bottom: 2em !important;
+    position:relative;
+    background-color:black;
+ }
+.textCenterOfPhoto{
+    color:white!important;
+    opacity:0.5!important;
+    font-size:1em!important;
+}
+.textCenterOfPhotoBG .textCenterOfPhoto {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    visibility:hidden;
+    color:#ffffe6;
+}
+.textCenterOfPhotoBG:hover .textCenterOfPhoto {
+    visibility:visible;
+    cursor:pointer;
+}
+.textCenterOfPhotoBG:hover img{
+    opacity: 0.5;
+    cursor:pointer;
+}
+
+.ProfPicGalleryThumbnail{
+  height: 25em!important;
+  overflow-y:hidden!important;
+  overflow-y:scroll!important;
+}
+.profilepicPhoto{
+  margin:1em!important;
+  width:100%!important;
+  height:7em!important;
+}
+.displaySelectedPhoto{
+  height:25em!important; 
+  width:30em!important;
+  position: absolute!important;
+  top: 50%!important;
+  left: 50%!important;
+  transform: translate(-50%, -50%)!important;
+  border-style: solid;
+  border-color: #ff99e6;
+}
+.displayProfilePhoto{
+  width:100%!important;
+  height:24.5em!important;
+  cursor:pointer!important;
+}    
+/////////////////////////===================
+ 
+   

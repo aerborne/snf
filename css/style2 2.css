@@ -1,0 +1,62 @@
+body{
+  background-image: url(bg.jpg);
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+.container{
+  width: 450px;
+height: auto;
+text-align: center;
+background-color: rgba(0, 0 , 0, 0.6);
+border-radius: 4px;
+margin: 0 auto;
+margin-top: 15px;
+margin-bottom: 20px;
+}
+input{
+  height: 30px;
+  width: 250px;
+  font-size: 14px;
+  margin-top: 10px;
+  background-color: #fff;
+}
+.con{
+  height: 30px;
+  width:190px;
+  font-size: 14px;
+  margine-right: 15px;
+  background-color: #fff;
+}
+select{
+  height: 30px;
+  width: 60px;
+  font-size: 14px;
+  margin-top: 15px;
+  background-color: #fff;
+}
+.reg{
+  height: 30px;
+  width: 100px;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+h1{
+  font-size: 40px;
+  text-align: center;
+  background-color: rgba(0,255,50,0.5)
+}
+h4{
+  font-size: 20px;
+  text-align: center;
+  color: rgb(220,0,50)
+}
+.log{
+  font-size: 15px;
+  text-align: left;
+  color: rgb(0,0,255);
+  margin-top: 50px;
+}
+.check{
+  font-size: 15px;
+  color: rgb(255,0,0);
+}
