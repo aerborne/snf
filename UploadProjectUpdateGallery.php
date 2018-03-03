@@ -1,10 +1,60 @@
 <?php
- 
-    $data_directoryName = "../images/ProjectProgUpdates/".$project_name."/".$pupdate_id."/".date ('D, F d Y')."/"; //Date Directory Name
-    $directoryName = "../images/ProjectProgUpdates/".$project_name."/".$pupdate_id."/".date ('D, F d Y')."/"; //Date Directory Name
-?> 
-<div id = "directoryPath" style = "display:none"><?php echo $data_directoryName;?></div>
-<div id = "pred_pupdate_id" style = "display:none"><?php echo $pupdate_id; ?></div>
+   date_default_timezone_set('Asia/Manila');
+
+   $data_directoryName  = "images/Portfolio/".$portfolio_id."/".date('D, F d Y')."/"; //Date Directory Name
+   $directoryName      = "images/Portfolio/".$portfolio_id."/".date('D, F d Y')."/"; //Date Directory Name
+
+   $id = $_GET['selectup'];
+ if(isset($_POST['submit'])){
+     // $id = '1';
+
+     for ($i = 0; $i < count($_FILES['upload']['name']); $i++) {
+         //Get the temp file path
+         $file_name = $_FILES['upload']['name'][$i];
+         $file_tmp = $_FILES['upload']['tmp_name'][$i];
+         $file_size = $_FILES['upload']['size'][$i];
+         $file_error = $_FILES['upload']['error'][$i];
+
+         $file_ext = explode('.', $file_name);
+         $file_ext = strtolower(end($file_ext));
+         // $allowed = array('jpg', 'jpeg', 'png', 'gif');
+         // if (in_array($file_ext, $allowed)) {
+         //     if ($file_error === 0) {
+                 // if ($file_size <= 100097152) {
+                     $file_name_new = uniqid('', true).
+                     '.'.$file_ext;
+                     $file_destination = 'uploads/'.$file_name_new;
+                     if (move_uploaded_file($file_tmp, $file_destination)) {
+                         $file_destination;
+                         // :TODO save path to db
+                         queryMysql("insert into projectprog_image(name,pupdate_id,path) values('$file_destination','$id','$file_destination')");
+                     }
+                 // }
+         //     }else {
+         //         // :TODO error validation
+         //     }
+         // }
+     }
+        echo "<script>alert('Successfully Added')</script>";
+        echo "<script>window.location ='admin_meta_index.php?selectup=$id';</script>";
+ }
+
+
+?>
+<!-- Declare node.js client variables-->
+    <div  id  = "portfolio_img_path" style = "display:none "><?php echo $data_directoryName; ?></div>
+    <form action="" method = "POST" enctype="multipart/form-data">
+        <div class="file-field input-field">
+            <div class="btn #ec407a pink lighten-1 ">
+              <span>File</span>
+              <input id='upload' name="upload[]" type="file" multiple="multiple"  accept="image/*" class="btn  white  " role = "button" required="required">
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate  black-text" type="text" placeholder="Upload one or more files">
+            </div>
+      </div>
+        <button type="submit" name="submit" class="btn btn-success btn-lg  active main-color-bg">Upload</button>
+    </form>
 <div class = "container">
 
 <div class = "row">
@@ -13,13 +63,13 @@
 
  <div  class="right">
          <br><br>
-         <input  id = "addProjectProgressBTN" class="btn btn-success btn-lg  active main-color-bg" type="submit" name = "submit" class="btn btn-success" value="Submit" style = "display:none">
-         <a id = "triggerUploadButton" class="btn #ec407a pink lighten-1 " >Upload</a>
-             </div><br><br> 
-   <div class = "clearfix"></div> 
-                
-                
-  <div class="file-field input-field">
+         <!-- <input  id = "addPortfolioBTN" class="btn btn-success btn-lg  active main-color-bg" type="submit" name = "submit" class="btn btn-success" value="Submit" style = "display:none"> -->
+         <!-- <a id = "triggerUploadButton" class="btn #ec407a pink lighten-1 " >Upload</a> -->
+             </div><br><br>
+   <div class = "clearfix"></div>
+
+
+  <!-- <div class="file-field input-field">
       <div class="btn #ec407a pink lighten-1 ">
         <span>File</span>
         <input id='upload' name="upload[]" type="file" multiple="multiple"  accept="image/*" class="btn  white  " role = "button" required="required">
@@ -27,157 +77,94 @@
       <div class="file-path-wrapper">
         <input class="file-path validate  black-text" type="text" placeholder="Upload one or more files">
       </div>
-</div>    
+</div> -->
    <div class = "clearfix"></div>
           <div  style = "margin-top:1em" id="selectedFiles"></div>
       <br><br><br><br><br><br>
-   
-    
+
+
             </div>
-            </form> 
- 
+            </form>
+
              <div class = "clearfix"></div>
              <div  style = "margin-top:1em" id="selectedFiles"></div>
-       
+
 </div>
 
 
 </div>
 <script>
-       
-       var storedFiles = [];  
-       var $user_id       = $('#user_id');
-       var $customer_id   = $('#customer_id');
-       var $project_name  = $('#project_name');
-       var $percent       = $('#percent');
-       var $pupdate_id    = $('#pupdate_id');
+
+// alert($('#portfolio_id').html());
+  var storedFiles = [];
+
   ///     var $delPictureInformationList  = "delPictureInformationList";
       var delPictureInformationOBJlist = '{"delPictureInformationList":[]}';
        var btnCounterID = 0;
       delPicture_obj_ls = JSON.parse(delPictureInformationOBJlist);
-      var  selDiv = $("#selectedFiles"); 
+      var  selDiv = $("#selectedFiles");
        $("#upload").on("change", handleFileSelect);
       function handleFileSelect(e) {
         var files = e.target.files;
         var filesArr = Array.prototype.slice.call(files);
-        filesArr.forEach(function(f) {          
+        filesArr.forEach(function(f) {
 
             if(!f.type.match("image.*")) {
                 return;
             }
             storedFiles.push(f);
-            
+
             var reader = new FileReader();
             reader.onload = function (e) {
                 filename =  f.name;
                 delPicture_obj_ls.delPictureInformationList.push({"temp_id":btnCounterID,"filename":f.name,"availability":"0"});
                 selDiv.append("<div class = 'col s12 m4 l4 xl2 ' id = 'uploadPictureHolder"+btnCounterID+"' style = 'margin-bottom:1em'><div id = 'filename"+btnCounterID+"' style = 'display:none'>"+f.name+"</div><div class = 'uploadPhotoDivHolder'><div class = 'right'><a class='waves-effect deletePictureUploadBTN'  onclick ='triggerDeleteUploadPicture("+btnCounterID+")'>&times;</a></div><img src=\"" + e.target.result + "\" data-file='"+f.name+"' class='selFile' title='Click to remove'></div></div>");
-                 btnCounterID++;  
-            }          
-            reader.readAsDataURL(f); 
-               
+                 btnCounterID++;
+            }
+            reader.readAsDataURL(f);
+
         });
     }
     function triggerDeleteUploadPicture(btnCounterID){
-       delPicture_obj_ls.delPictureInformationList[btnCounterID].availability = 1;     
-       $("#uploadPictureHolder"+btnCounterID).hide();  
+       delPicture_obj_ls.delPictureInformationList[btnCounterID].availability = 1;
+       $("#uploadPictureHolder"+btnCounterID).hide();
     }
-  
-   
-      
-    $("#triggerUploadButton").click(function(){
+
+       $("#triggerUploadButton").click(function(){
               if($('#upload').get(0).files.length === 0){
                   alert('Please Fill up the Fields and Choose a Picture to upload!  ');
               }else{
                   ///Check if there anything uploaded
-                  //Create a counter for every 0 available counted 
+                  //Create a counter for every 0 available counted
                   var ctrAvail = 0;
                   for (var i = 0; i <  delPicture_obj_ls.delPictureInformationList.length; i++) {
                        var  availability =  delPicture_obj_ls.delPictureInformationList[i].availability;
                          if(availability == 0){
                            ctrAvail++;
                          }else{
-                             
+
                          }
                   }
                   if(ctrAvail == 0){
                     alert('Please choose a picture to upload! ');
-                     //var input = $("#upload");    
+                     //var input = $("#upload");
                          $("#upload").val("");
                   }else{
-                           // alert('delete pictures');
-                 for (var i = 0; i <  delPicture_obj_ls.delPictureInformationList.length; i++) {
-                     var  temp_id      =  delPicture_obj_ls.delPictureInformationList[i].temp_id;
-                     var  filename     =  delPicture_obj_ls.delPictureInformationList[i].filename;
-                     var  availability =  delPicture_obj_ls.delPictureInformationList[i].availability;           socket.emit('get_delete_upload_pic',temp_id,filename,availability,$('#pred_pupdate_id').html(),$('#directoryPath').html(),function(temp_id,filename,availability,pred_pupdate_id,directoryPath){});
+                        for (var key in delPicture_obj_ls.delPictureInformationList) {
+                           delPicture_obj_ls.delPictureInformationList[key].temp_id;
+                           var  temp_id      =  delPicture_obj_ls.delPictureInformationList[key].temp_id;
+                           var  filename     =  delPicture_obj_ls.delPictureInformationList[key].filename;
+                           var  availability =  delPicture_obj_ls.delPictureInformationList[key].availability;
+                        socket.emit('get_delete_upload_port_pic',temp_id,filename,availability,$('#portfolio_id').html(),$('#portfolio_img_path').html(),function(temp_id,filename,availability,pred_pupdate_id,directoryPath){});
+
+
+                    }
+
                   }
-       
-                         
-                  }             
               }
     });
-   
-      
-    
-    socket.on('trigger deleteProjectPhoto',function(){
-        $('#addProjectProgressBTN').trigger('click');
-    });
-    
-       
- /*
-    
-      $('#myForm').submit(function(){
-            
-                   //var newProjectUpdateMessage = "Project "+$project_name.html()+" has been updated to  "+$percent.val()+"%";
-                   //socket.emit('NewProject Notification',$user_id.html(),$customer_id.html(),newProjectUpdateMessage,'client.php?ProjectUpdateContent='+$pupdate_id.html(),'project_update',function(user_id,customer_id,newProjectMessage,key_id,notification_type){});
-          
-      
-       });
-   
-   */
-    
- 
+    socket.on('trigger deletePortPhoto',function(){
+    $('#addPortfolioBTN').trigger('click'); });
+
 
 </script>
- <?php
-    
- if(isset($_POST['submit']) && !empty($_POST['description'])){
-    
- 
-    if(!is_dir($directoryName)){ //Validate if there is no Existing Directory
-      mkdir($directoryName,0755,true);
-      if(count($_FILES['upload']['name'])> 0){
-        //Uploading  Single and Multiple Files
-          //Loop through each file
-          for($i=0; $i<count($_FILES['upload']['name']); $i++) {
-            //Get the temp file path
-              $tmpFilePath = $_FILES['upload']['tmp_name'][$i];
-
-              //Make sure we have a filepath
-              if($tmpFilePath != ""){
-                  //save the filename
-                  $shortname = $_FILES['upload']['name'][$i];
-                  //save the url and the file
-                  $filePath = $directoryName.$_FILES['upload']['name'][$i];
-                  //Upload the file into the temp dir
-                  if(move_uploaded_file($tmpFilePath, $filePath)) {
-                      $files[] = $shortname;
-                    /*
-                      queryMysql("insert into projectprog_image(name,pupdate_id,path)    values('$shortname','$id','$filePath')");
-                      */
-                     
-                  }
-                }
-          }
-      }
-    }
-
-
-              echo "<script>alert('Successfully Added')</script>";
-              echo "<script>window.open('index.php?Project/Updates=$projprog_id','_self')</script>";
-  
-      }
-   
-  
- 
-?>
