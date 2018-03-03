@@ -1,17 +1,17 @@
 
 <?php
- 
+
   session_start();
   require_once 'functions/ErrorHandler.php';
   require_once 'functions/Validator.php';
   require_once 'functions/functions.php';
   require_once 'functions/prime_functions.php';
   require_once 'css/validation.php';
- 
+
   if(!$loggedin)
   die();
-  $user_id = $_SESSION['user_id']; 
- $logged_in_user_level = $_SESSION['user_level']; 
+  $user_id = $_SESSION['user_id'];
+ $logged_in_user_level = $_SESSION['user_level'];
  $select_username  = queryMysql("SELECT  username from users where user_iid = '$user_id'");
   $row_select_username  = mysqli_fetch_array($select_username);
   $select_username_result =  $row_select_username['username'];
@@ -20,12 +20,12 @@
       $row_availability = mysqli_fetch_array($availability_result);
       $availability_result = $row_availability['levels'];
     if($availability_result  == "Client" || $availability_result == "Interior Designer" || $availability_result   == "Owner"){
-        
+
     }else{
 
 ?>
 
-<?php 
+<?php
 ///Setting Current Profile Picture
   $logged_user_id  = $_SESSION['user_id'];
   $select_current_profile_picture  = queryMysql("select  * from users left join user_images on users.user_iid = user_images.user_iid  where  user_images.selected = 0  and users.user_iid = '$logged_user_id' ");
@@ -45,7 +45,7 @@
 <div id = "user_id" style = "display:none"><?php  echo  $logged_user_id ; ?></div>
 <div id = "user_id" style = "display:none"><?php  echo  $logged_in_user_level ; ?></div>
 <div id = "username" style = "display:none"><?php  echo  $select_username_result ; ?></div>
- 
+
 <!DOCTYPE html>
   <html>
     <head>
@@ -57,40 +57,179 @@
    <link type="text/css" rel="stylesheet" href="css/ionicons/css/ionicons.min.css"  media="screen,projection"/>
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style type="text/css">
+#img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+}
+
+     .yourdiv
+{
+    display: inline;
+     margin-top: 100px;
+    margin-bottom: 100px;
+    margin-right: 150px;
+     margin-left: 450px;
+}
+
+
+.HeaderDiv {
+height : 350px;
+background-image : url("img/bg.jpg");
+background-size: cover;
+background-position: center;
+margin-bottom : 0px;
+    margin: auto;
+}
+
+.HeaderColor {
+height : 100px;
+background-color : black;
+opacity: 0.5;
+}
+.HeaderNav {
+height : 75px;
+width : 45%
+right: 0;
+
+position : fixed;
+padding-top : 40px;
+
+}
+
+.HeaderButtons {
+right: 15;
+margin-top : 5px;
+margin-right : 30px;
+color: white;
+text-decoration: none;
+border-style: solid;
+border-radius : 25px;
+padding-left : 15px;
+padding-right : 15px;
+padding-top : 7px;
+padding-bottom : 7px;
+margin-left : 10px;
+font-weight: bold;
+font-family : "Lucida Console";
+text-shadow: 1px 1px black;
+right: 0;
+
+position : fixed;
+
+}
+
+.HeaderPhrase {
+font-family : "Verdana";
+font-weight: bold;
+width : 60%;
+margin-top : 30px;
+padding-top : 0;
+
+}
+
+.HeaderFont {
+color : white;
+font-size : 70px;
+text-shadow: 2px 2px black;
+margin: auto;
+
+}
+
+.HeaderFont2 {
+color : white;
+font-size : 20px;
+margin: auto;
+
+}
+
+    .footerwrap {
+height : 250px;
+background-color : #f06292;
+
+}
+    }
+
+.footerlogo {
+float : left;
+margin-left : 10px;
+margin-top : 30px;
+}
+
+.footerright {
+float : right;
+width : 30%;
+
+}
+
+.footerhead {
+
+font-family : "Impact";
+font-weight: bold;
+color : white;
+
+}
+
+.footerlistli {
+list-style-type: none;
+margin-bottom : 20px;
+text-align : left;
+font-family : "Trebuchet MS";
+color : #ecf0f1;
+text-decoration: none;
+
+}
+
+.footerlistul {
+margin-top : 65px;
+}
+
+.footerlinks {
+text-decoration: none;
+color : #ecf0f1;
+
+}
+
+    </style>
     </head>
     <body>
-                
- <script src = "js/jquery-1.11.3.min.js"></script>    
-<script src = "http://localhost:3100/socket.io/socket.io.js"></script> 
+
+
+<script src = "http://localhost:3100/socket.io/socket.io.js"></script>
 <script>
-    var socket  = io.connect('http://localhost:3100'); 
-    
-    
-        socket.on('connect', function() {    
+    var socket  = io.connect('http://localhost:3100');
+
+
+        socket.on('connect', function() {
             socket.emit('addUser',$('#user_id').html(),$('#username').html(),$('#user_level').html(),' ',' ',' ',' ',' ');
         });
         socket.on('countMessagesValuesClient',function(countMessagesValues){
            $('#messageCounterAdmin').empty();
            $.each(countMessagesValues,function(key,value){
                $('#messageCounterAdmin').prepend('<div>'+value+'</div>');
-        }); 
+        });
                 $('#MessageClick').click(function(){
-         socket.emit('Seen Messsages Client'); 
+         socket.emit('Seen Messsages Client');
 });
-        });  
+        });
 
-    
-</script>  
+
+
+
+
+</script>
         <ul id="slide-out" class="side-nav  #f3e5f5 purple lighten-3 white-text">
               <a  href = "">
             <li>
     <div class="col s5 m8 offset-m2 l4 offset-l3">
         <div class="card-panel #f3e5f5 purple lighten-5 z-depth-1" style  = "height:4em">
           <div class="row valign-wrapper">
-            <div class="col s4"> 
-            <!-- sidebar profilepicture thumbnail --> 
-                      <img id = "sidebarProfileThumb" src="<?php echo $current_path; ?>" alt="" class=" responsive-img"> 
-                
+            <div class="col s4">
+            <!-- sidebar profilepicture thumbnail -->
+                      <img id = "sidebarProfileThumb" src="<?php echo $current_path; ?>" alt="" class=" responsive-img">
+
             </div>
             <div class="col s10">
               <span class = "white-text">
@@ -100,19 +239,19 @@
           </div>
         </div>
       </div>
-          
+
           </li>
                    </a>
         <li>
            <div class = "divider">
-           </div>    
+           </div>
         </li>
           <li>
-              <a class = "white-text" href="index.php?dashboard">Dashboard</a>
+              <a class = "white-text" href="admin_meta_index.php?dashboard">Dashboard</a>
           </li>
-          
-         <li> 
-           <a class = "white-text" href = "#">Services</a>    
+
+         <li>
+           <a class = "white-text" href = "index.php">Home</a>
          </li>
           <li>
             <a class = "white-text" href="#">Contact</a>
@@ -127,7 +266,7 @@
                <li><a class = "white-text" style = "background-color:" href="#">Manage Gallery</a></li>
                <li><a class = "white-text" href  = "admin_meta_index.php?allusers">Manage Users</a></li>
                <li><a class = "white-text" href  = "admin_meta_index.php?allportfolio">Manage Portfolios</a></li>
-               <li><a class = "white-text"  href = "admin_meta_index.php?allcategory">Manage Category</a> </li>   
+               <li><a class = "white-text"  href = "admin_meta_index.php?allcategory">Manage Category</a> </li>
                <li><a class = "white-text" href  = "admin_meta_index.php?allprojectpage">Manage Projects</a></li>
              <li><a class = "white-text" href  = "admin_meta_index.php?allsection">Manage Section</a></li>
               </ul>
@@ -143,9 +282,9 @@
               <ul>
                <li><a class = "white-text" href  = "admin_meta_index.php?uadd">Add Users</a></li>
                <li><a class = "white-text" href  = "admin_meta_index.php?AddPortfolio">Add Portfolios</a></li>
-               <li><a class = "white-text"  href = "admin_meta_index.php?cadd">Add Category</a> </li>   
+               <li><a class = "white-text"  href = "admin_meta_index.php?cadd">Add Category</a> </li>
                <li><a class = "white-text" href  = "admin_meta_index.php?padd">Add Projects</a></li>
-                <li><a class = "white-text" href  = "admin_meta_index.php?sadd">Add Section</a></li> 
+                <li><a class = "white-text" href  = "admin_meta_index.php?sadd">Add Section</a></li>
              </ul>
             </div>
           </li>
@@ -155,20 +294,20 @@
             <div  class="divider"></div>
           </li>
           <li>
-            <a  class = "white-text" class="waves-effect modal-trigger" href="index.php?Logout">Sign Out</a>
-          </li>       
+            <a id = "logout" class = "white-text" class="waves-effect modal-trigger" href="admin_meta_index.php?logout">Sign Out</a>
+          </li>
         </ul>
-        
-        
-        
+
+
+
 <div id="MyProfileInfoPanelPicUploadB" class="modal">
     <div class="modal-content">
-              
+
     <?php include('ChangeMyProfilePicture.php'); ?>
 
     </div>
-</div>        
-<!-- NavAccountInformationModal start --> 
+</div>
+<!-- NavAccountInformationModal start -->
 <div id="NavAccountInformationModal" class="modal">
     <div class="modal-content">
           <!-- Edit  input fields Start -->
@@ -179,53 +318,53 @@
      <div class = "displaySelectedPhoto">
          <div class = "textCenterOfPhotoBG">
              <div id = "DisplaySelectedProfilePic">
-                   <a  class=" modal-trigger modal-close"   href="#MyProfileInfoPanelPicUploadB"><img  id =  "DisplayEditProfileThumb"  src="<?php echo $current_path; ?>" alt="" class="responsive-img displayProfilePhoto" ></a> 
+                   <a  class=" modal-trigger modal-close"   href="#MyProfileInfoPanelPicUploadB"><img  id =  "DisplayEditProfileThumb"  src="<?php echo $current_path; ?>" alt="" class="responsive-img displayProfilePhoto" ></a>
                    <p class="textCenterOfPhoto">Change Profile Picture</p>
-               </div>    
+               </div>
          </div>
-    </div>  
+    </div>
     <!-- Put an image for upload picture -->
 </div>
 <div  style = "margin-bottom:30em"></div>
 <?php include('EditMyProfileForm.php') ?>
-   
-</div>        
-</div>           
-<!-- Edit  input fields End --> 
+
+</div>
+</div>
+<!-- Edit  input fields End -->
     </div>
-</div>    
-<!-- NavAccountInformationModal end -->    
-<div class=" #e040fb purple accent-2 navbar-fixed" style = "position:relative;width:100%;height:2.5em"> 
-          <a href="" data-activates="slide-out" class="button-collapse" ><i class="small material-icons white-text">menu</i></a>   
+</div>
+<!-- NavAccountInformationModal end -->
+<div class=" #e040fb purple accent-2 navbar-fixed" style = "position:relative;width:100%;height:2.5em">
+          <a href="" data-activates="slide-out" class="button-collapse" ><i class="small material-icons white-text">menu</i></a>
           <span  class = "NavAccountProfileImage">
                 <a  class="waves-effect waves-light modal-trigger" href="#NavAccountInformationModal">
-                    
-                    <img id =  "UpperRightProfileThumb" src="<?php echo $current_path; ?>" alt="" class="circle responsive-img" style = "height:2em" > 
+
+                    <img id =  "UpperRightProfileThumb" src="<?php echo $current_path; ?>" alt="" class="circle responsive-img" style = "height:2em" >
               </a>
           </span>
-    
+
   <!-- Modal Structure -->
 
-    
-    
-    
+
+
+
           <span class = "MyAccountIcons">
                <a id = "MessageClick" href = "admin_meta_index.php?messagepanel" class = "iconHoverColor" style = "cursor:pointer">
                      <span style = "position:relative"><i class="small material-icons  white-text">mail_outline</i><span class = "NavAccountNotifCounterBox" id = "messageCounterAdmin">10</span></span>
               </a>
              <a class = "iconHoverColor" style = "cursor:pointer">
-            <span style = "position:relative"><i class="small material-icons  white-text">language</i><span class = "NavAccountNotifCounterBox" id = "notification_value">0</span></span> 
-             </a> 
-          </span>  
+            <span style = "position:relative"><i class="small material-icons  white-text">language</i><span class = "NavAccountNotifCounterBox" id = "notification_value">0</span></span>
+             </a>
+          </span>
     </div>
-        
-        
- 
 
-           
-       
-  
-        
+
+
+
+
+
+
+
 <!-- Add Portfolio  modal start -->
         <div id="signInModal" class="modal">
           <div class="modal-content">
@@ -262,20 +401,20 @@
         </div>
   <!-- Add Portfolio Modal End -->
         <!--
-        
+
          <a href="" class="btn tooltipped" data-position="top" data-tooltip="I am tooltip">Hover Me</a>
         -->
         <div id="uploadOption" class="modal">
           <div class="modal-content">
             <div class="card-panel violet">
-             <span>     
+             <span>
              </span>
                 <h4>Choose where to get photos</h4>
-<?php 
+<?php
   $select_portfolio_id        = queryMysql("SELECT  * from  portfolio  order by portfolio_id desc limit 1 ");
   $row_select_portfolio_id    = mysqli_fetch_array($select_portfolio_id);
-  $select_portfolio_id_result =  $row_select_portfolio_id['portfolio_id'] + 1; 
-?> 
+  $select_portfolio_id_result =  $row_select_portfolio_id['portfolio_id'] + 1;
+?>
                   <div class = "row">
                       <div class = "center-align">
                       <div class  = "col s3">
@@ -288,13 +427,37 @@
                 </div>
             </div>
           </div>
-        </div>        
-<!-- SignIn  modal end --> 
-      
+        </div>
+<!-- SignIn  modal end -->
 
-<div class = "container">
-     <br><br>
-<?php 
+               <div class="headerDiv">
+
+		<div class="HeaderLogo">
+            <br>
+
+		</div>
+
+		<center>
+            <div class="container">
+		<div class="HeaderPhrase">
+
+	<h2 class="center-align" style="color : white;
+font-size : 50px;
+text-shadow: 2px 2px black; font-weight: 900;">See and Feel Interior Design</h2>
+			<h3 class="center-align" style="color : white;
+font-size : 15px;
+margin: auto; font-weight: bold;">Everything is possible if we try</h3>
+
+		</div>
+
+                </div>
+		</center>
+
+
+</div>
+<br><br>
+
+<?php
 
 
 if(isset($_GET['importproject'])){
@@ -309,11 +472,11 @@ if(isset($_GET['allprojectpage'])){
 if(isset($_GET['allsection'])){
   include('AllSection.php');
 }
-          
+
 if(isset($_GET['allportfolio'])){
-  include('AllPortfolioList.php'); 
+  include('AllPortfolioList.php');
 }
-if(isset($_GET['portfolio'])){  
+if(isset($_GET['portfolio'])){
   include('PortfolioGallery.php');
 }
 if(isset($_GET['padd'])){
@@ -321,20 +484,20 @@ if(isset($_GET['padd'])){
   include('AddProjectProgress2.php');
 }
 if(isset($_GET['DeletedPortfolio'])){
-  include('DeletedPortfolio.php'); 
-} 
+  include('DeletedPortfolio.php');
+}
 if(isset($_GET['DeletedProject'])){
-  include('DeletedProject.php'); 
-} 
+  include('DeletedProject.php');
+}
 if(isset($_GET['DeletedCategory'])){
-  include('DeletedCategory.php'); 
-} 
+  include('DeletedCategory.php');
+}
 if(isset($_GET['deleted-section'])){
-  include('DeletedSection.php'); 
-} 
-          
-if(isset($_GET['RestorePortfolio'])){ 
-  include('RestorePortfolio.php'); 
+  include('DeletedSection.php');
+}
+
+if(isset($_GET['RestorePortfolio'])){
+  include('RestorePortfolio.php');
 }
 if(isset($_GET['RestoreUser'])){
     include('RestoreUsers.php');
@@ -343,7 +506,7 @@ if(isset($_GET['DeletedUsers'])){
     include('DeletedUsers.php');
 }
 if(isset($_GET['RestoreProjectProg'])){
-    include('RestoreProjectProg.php'); 
+    include('RestoreProjectProg.php');
 }
 if(isset($_GET['RestoreCategory'])){
     include('RestoreCategory.php');
@@ -351,7 +514,7 @@ if(isset($_GET['RestoreCategory'])){
 if(isset($_GET['RestoreSection'])){
     include('RestoreSection.php');
 }
-          
+
 if(isset($_GET['EditProject'])){
     include('EditProjectProgress.php');
                          //exit();
@@ -360,7 +523,7 @@ if(isset($_GET['allcategory'])){
     include('AllCategory.php');
 }
 if(isset($_GET['allusers'])){
-    include('AllUser3.php');  
+    include('AllUser3.php');
 }
 if(isset($_GET['AllMessages'])){
     include('1DirectMessages.php');
@@ -375,7 +538,7 @@ if(isset($_GET['sadd'])){
     include('AddSection.php');
 }
 if(isset($_GET['AddPortfolio'])){
-    include('AddPortfolio.php'); 
+    include('AddPortfolio.php');
 }
 if(isset($_GET['cat_id'])){
     include('EditCategory.php');
@@ -390,7 +553,7 @@ if(isset($_GET['ppuj'])){
 if(isset($_GET['ppup']) && isset($_GET['pdd']) ){
     include('EditProjectProgressUpdate.php');
 }
-if(isset($_GET['DeletePPU'])&& isset($_GET['Proj'])){
+if(isset($_GET['deleteppu'])&& isset($_GET['Proj'])){
     include('DeleteProjectProgress.php');
 }
 if(isset($_GET['DeletePro'])){
@@ -403,16 +566,16 @@ if(isset($_GET['DeleteUser'])){
     include('DeleteUsers.php');
 }
 if(isset($_GET['DeletePortfolio'])){
-    include('DeletePortfolio.php'); 
+    include('DeletePortfolio.php');
 }
 if(isset($_GET['deletesection'])){
     include('DeleteSection.php');
-}    
+}
 if(isset($_GET['sec_id'])){
     include('EditSection.php');
-}             
+}
 if(isset($_GET['EditHeading'])){
-    include('EditHeading.php'); 
+    include('EditHeading.php');
 }
 if(isset($_GET['dpj'])&& isset($_GET['epju']) ){
     include('EditProjectProgressUpdate.php');
@@ -421,7 +584,7 @@ if(isset($_GET['u_id'])){
     include('EditUsers.php');
 }
 if(isset($_GET['ResetPass'])){
-    include('EditUsersPassword.php'); 
+    include('EditUsersPassword.php');
 }
 if(isset($_GET['ResetUsername'])){
     include('EditUserUsername.php');
@@ -430,14 +593,14 @@ if(isset($_GET['ResetUsername'])){
 if(isset($_GET['AddProClient'])){
    include('AddProjectClient.php');
 }
-if(isset($_GET['SelectUp'])){
+if(isset($_GET['selectup'])){
    include('SelectedUpdate.php');
 }
 if(isset($_GET['logout'])){
    include('signOutAdmin.php');
 }
 if(isset($_GET['Homepage'])){
-  include('EditHeading.php');     
+  include('EditHeading.php');
 }
 if(isset($_GET['EditAccount'])){
   include('EditAccount.php');
@@ -451,11 +614,11 @@ if(isset($_GET['EditAboutUs'])){
 if(isset($_GET['EditContactUs'])){
  include('EditContactUs.php');
 }
-if(isset($_GET['dashboard'])){ 
+if(isset($_GET['dashboard'])){
   include('Dashboard1.php');
-} 
+}
 if(isset($_GET['Gallery'])){
-  include('Gallery.php'); 
+  include('Gallery.php');
 }
 if(isset($_GET['AssignProjectUpSection'])){
   include('AssignProjectUpSection.php');
@@ -469,34 +632,30 @@ if(isset($_GET['SelectProjUpPicSec'])){
 if(isset($_GET['clientviewportfolio'])){
   include('ClientViewPortfolio.php');
 }
-if(isset($_GET['testDesign'])){
+if(isset($_GET['testdesign'])){
   include('testDesign.php');
 }
 if(isset($_GET['messagepanel'])){
   include('1DirectMessages.php');
 }
 
-?>        
-</div>    
+?>
+
       <!--Import jQuery before materialize.js-->
-     <script src = "js/JQuery-1.8.0.js"></script>
+
      <script src = "js/jquery-1.11.3.min.js"></script>
       <script type="text/javascript" src="js/materialize.min.js"></script>
      <script>
-/*         
- 
-*/
- 
-         
+
 $(document).ready(function(){
-    
+
 //Update profile picture thumbnails start
 socket.on('set updateProfilePicture',function(data){
     $('#sidebarProfileThumb').attr('src',data.up_path);
     $('#UpperRightProfileThumb').attr('src',data.up_path);
     $('#DisplayEditProfileThumb').attr('src',data.up_path);
 });
-//Update profile picture thumbnails end    
+//Update profile picture thumbnails end
 $('.tooltipped').tooltip({delay: 50});
 $('#test123').click(function(e){
     e.preventDefault();
@@ -507,18 +666,34 @@ $('#AddPortfolioBtn').click(function(e){
      socket.emit('Add Portfolio',$('#portfolio_name').val(),$('#description').val(),$('#category_id').val(),$('#user_id').html(),function(portfolio_name,description,category_id,user_id){});
      alert('Successfully Addedsssasds');
 });
-     
+
            //initialize sidenavbar
            $('.carousel.carousel-slider').carousel({fullWidth: true});
            $('.button-collapse').sideNav();
            $('.modal').modal();
            $('select').material_select();
 });
-        
+         $('#logout').click(function(){
+             socket.emit('disconnect', function(){});
+         });
+
+
+
      </script>
-        
+
     </body>
   </html>
-<?php 
+<?php
     }
         ?>
+
+
+<!--FOOTER CODES -->
+
+<div class="footerwrap">
+<img src="img/LogoFooter.png" width=250 class="footerlogo">
+<div class="footerright">
+<ul class="footerlistul"><li class="footerlistli"><b class="footerhead">DIRECTORY</b></li>
+<li class="footerlistli"><a href="" class="footerlinks">Careers</a></li>
+    <li class="footerlistli"><a href="" class="footerlinks">Contact Us</a></li></ul></div>
+</div>

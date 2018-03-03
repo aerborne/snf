@@ -124,7 +124,7 @@
  <?php
 
  if(isset($_POST['submit'])){
-     $date = date('YYYY-MM-DD HH:mm');
+     $date = date("Y-m-d H:i");
      $uid = $_SESSION['user_id'];
      $id = $_GET['portfolio'];
 //if(isset($_POST['submit'])){

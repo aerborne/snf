@@ -11,8 +11,8 @@ if(isset($_GET['AddPortfolio'])){
        //add 1 for realtime
        // static variable for non realtime(php)
      date_default_timezone_set('Asia/Manila');
-     $data_directoryName = "images/portfolio/".$rtpupdate_id."/".date('YYYY-MM-DD HH:mm:ss')."/";
-     $directoryName      = "images/portfolio/".$pupdate_id."/".date('YYYY-MM-DD HH:mm:ss')."/"; //Date Directory Name
+     $data_directoryName = "images/portfolio/".$rtpupdate_id."/".date('D, F d Y')."/";
+     $directoryName      = "images/portfolio/".$pupdate_id."/".date('D, F d Y')."/"; //Date Directory Name
 
 ?>
 <!-- Declare node.js client variables-->
@@ -89,12 +89,11 @@ if(isset($_GET['AddPortfolio'])){
      $project_name = $_POST['project_name'];
      $desc = $_POST['description'];
      $cat = $_POST['category_id'];
-     $date = date('YYYY-MM-DD HH:mm');
      $uid = $_SESSION['user_id'];
 
       if(count($_FILES['upload']['name'])> 0){
-          queryMySql("INSERT INTO portfolio(name,description,category_id,dated,user_iid) VALUES('$project_name','$desc','$cat','$date','$uid')");
-          $pfid = queryMysql("SELECT portfolio_id FROM portfolio WHERE name = '$project_name' and description = '$desc' and dated = '$date'");
+          queryMySql("INSERT INTO portfolio(name,description,category_id,dated,user_iid) VALUES('$project_name','$desc','$cat',NOW(),'$uid')");
+          $pfid = queryMysql("SELECT portfolio_id FROM portfolio WHERE name = '$project_name' and description = '$desc'");
           $row = mysqli_fetch_array($pfid);
           $id = $row['portfolio_id'];
         //Uploading  Single and Multiple Files
@@ -118,7 +117,7 @@ if(isset($_GET['AddPortfolio'])){
                           if (move_uploaded_file($file_tmp, $file_destination)) {
                               $file_destination;
                               // :TODO save path to db
-                              queryMysql("INSERT INTO portfolio_images(name,portfolio_id,path,available,upload_datetime) VALUES('$file_destination','$id','$file_destination','0','$date')");
+                              queryMysql("INSERT INTO portfolio_images(name,portfolio_id,path,available,upload_datetime) VALUES('$file_destination','$id','$file_destination','0',NOW())");
                           }
                       // }
               //     }else {
